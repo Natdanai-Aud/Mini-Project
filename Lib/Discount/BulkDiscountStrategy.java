@@ -15,7 +15,7 @@ public class BulkDiscountStrategy implements DiscountStrategy{
     }
     @Override
     public double calculatePrice(CartItem item) {
-        double originalPrice = item.getProduct().getPrice() * item.getQuantity() ;
+        double originalPrice = item.getProduct().getPrice() ;
         if (item.getQuantity() >= minimumQuantity) {
             return originalPrice * (1.0 - discountPercentage) ;
         }

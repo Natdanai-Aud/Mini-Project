@@ -9,7 +9,10 @@ public class BogoDiscountStrategy implements DiscountStrategy{
 
     @Override
     public double calculatePrice(CartItem item) {
-         return item.getProduct().getPrice() * Math.round(item.getQuantity())/2.0;
+        int quantity = item.getQuantity(); //ค้นหาจำนวนรายการสินค้า
+        double price = item.getProduct().getPrice(); //ค้นหาราคาสินค้า
+        int quantityToPay = (quantity/2) + (quantity % 2); //(จำนวนสินค้า / 2) + (เศษจากจำนวนสินค้าเมื่อหาร 2)
+        return price * quantityToPay ; //ส่งราคา * จำนวนสินค้าที่คำนวณได้
     }
     
 }
