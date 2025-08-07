@@ -2,7 +2,7 @@ import Lib.CartItem;
 import Lib.Product;
 import Lib.ProductCatalog;
 
-public class Test1 {
+ public class Test1 {
     public static void main(String[] args) {
         Product a = new Product("P001", "Apple", 10.0);
         Product b = new Product("P002", "Soda", 5.0);
@@ -18,3 +18,5 @@ public class Test1 {
         CartItem item2 = new CartItem(b, 3);
     }
 }
+ 
+

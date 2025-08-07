@@ -30,7 +30,7 @@ public class ProductCatalog {
         checkRep();
     }
 
-    /**````
+    /**
      *  เพิ่มสินค้าใหม่เข้าสู่แคตตาล็อก
      * @param product สินค้าที่ต้องการเพิ่ม
      */

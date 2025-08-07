@@ -11,5 +11,5 @@ public interface DiscountStrategy {
      * @param item รายการสินค้าในตะกร้า
      * @return ราคาสุทธิ์หลังใช้โปรโมชัน
      */
-    double calculatePrice(CartItem item);
+    public double calculatePrice(CartItem item);
 }

@@ -8,20 +8,24 @@ import java.util.ArrayList;
 public class ShoppingCart {
     private final PricingService pricingService ;
     private final ProductCatalog productCatalog ;
-    private ArrayList<Product> products = new ArrayList<>();
+    private final ArrayList<CartItem> items ;
 
     // RI : ArrayList ภายในต้องไม่เป็น null และห้ามมี product ที่ซ้ำกันใน CartItem ที่แตกต่างกัน
     private void checkRep() {
-        if(products == null){
+        if(items == null){
            throw new RuntimeException("RI violated: products"); 
         }
+        ArrayList<Product> seen = new ArrayList<>();
         // Check for dulicate products
-        for (int i = 0; i < products.size(); i++) {
-            for (int j = i + 1; j < products.size(); j++) {
-                if(products.get(i).equals(products.get(j))){
-                    throw new RuntimeException("RI violated: products"); 
-                }
+        for (CartItem item : items) {
+            if (item == null) {
+                throw new RuntimeException("Item is null");
             }
+            Product product = item.getProduct();
+            if (seen.contains(product)) {
+                throw new RuntimeException("Duplicate product in cart");
+            }
+            seen.add(product);
         }
     }
     /**
@@ -30,6 +34,7 @@ public class ShoppingCart {
      * @param productCatalog เป็นแคตตาล็อกสินค้า
      */
     public ShoppingCart(PricingService pricingService ,ProductCatalog productCatalog){
+        this.items = new ArrayList<>();
         this.pricingService = pricingService ;
         this.productCatalog = productCatalog ;
         checkRep();
@@ -43,11 +48,18 @@ public class ShoppingCart {
      * @param quantity จำนวนสินค้า
      */
     public void addItem(String productId, int quantity) {
-        if (productCatalog.findById(productId) == null) {
-            addItem(productId, quantity);
-        }else{
-            quantity +=1;
+        Product product = productCatalog.findById(productId) ; 
+        if (product == null) {
+            return;
         }
+        for (CartItem item : items) {
+            if (item.getProduct().equals(product)) {
+                item.increaseQuantity(quantity);
+                checkRep();
+                return ;
+            }
+        }
+        items.add(new CartItem(product, quantity));
         checkRep();
     }
 
@@ -56,8 +68,13 @@ public class ShoppingCart {
      * @param productId รหัสสินค้าที่จะลบออก
      */
     public void removeItem(String productId) {
-        removeItem(productId);
-        checkRep();
+        for (int i = 0; i < items.size(); i++) {
+            if (items.get(i).getProduct().getProductId().equals(productId)) {
+                items.remove(i);
+                checkRep();
+                break ;
+            }
+        }
     }
 
     /**
@@ -65,13 +82,18 @@ public class ShoppingCart {
      * @return
      */
     public double getTotalPrice() {
-        for (PricingService pricingService : pricingService) {
-            return pricingService;
+        double tatol = 0 ;
+        for (CartItem item : items) {
+            tatol += pricingService.calculateItemPrice(item);
         }
+        return tatol ;
     }
     public int getItemCount() {
-        return getItemCount()+1;
+        return items.size();
     }
-    
+    public void clearCart(){
+        items.clear();
+        checkRep();
+    }
     
 }

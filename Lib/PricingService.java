@@ -11,7 +11,7 @@ import Lib.Discount.DiscountStrategy;
 public class PricingService {
     private record StrategyRule(String sku, DiscountStrategy stetegy) {}
     private final ArrayList<StrategyRule> strategies = new ArrayList<>();
-    private final DiscountStrategy defalStrategy = new DefaultPricingStrategy() ;
+    private final DiscountStrategy defaulStrategy = new DefaultPricingStrategy() ;
 
     /**
      * ลงทะเบียนกลยุทธ์ส่วนลดสำหรับสินค้า sku ที่กำหนด
@@ -20,7 +20,7 @@ public class PricingService {
      * @param stetegy กลยุทธ์ส่วนลดที่ใช้
      */
 
-    public void addStrategy(String sku, DiscountStrategy stetegy) {
+    public void addStrategy(String sku, DiscountStrategy strategy) {
         StrategyRule ruleToRemove = null ;
         for(StrategyRule rule : strategies) {
             if (rule.sku().equals(sku)) {
@@ -31,7 +31,7 @@ public class PricingService {
         if (ruleToRemove != null) {
             strategies.remove(ruleToRemove);
         }
-        strategies.add(new StrategyRule(sku, stetegy));
+        strategies.add(new StrategyRule(sku, strategy));
     }
     /**
      * คำนวณราคาสุทธิของสินค้า 1 รายการโดยการใช้กลยุทธ์ที่เหมาะสม
@@ -46,7 +46,7 @@ public class PricingService {
                 return rule.stetegy().calculatePrice(item);
             }
         }
-        return defalStrategy.calculatePrice(item) ;
+        return defaulStrategy.calculatePrice(item) ;
      }
     
 
