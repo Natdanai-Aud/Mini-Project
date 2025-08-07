@@ -15,8 +15,11 @@ public class BulkDiscountStrategy implements DiscountStrategy{
     }
     @Override
     public double calculatePrice(CartItem item) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'calculatePrice'");
+        double originalPrice = item.getProduct().getPrice() * item.getQuantity() ;
+        if (item.getQuantity() >= minimumQuantity) {
+            return originalPrice * (1.0 - discountPercentage) ;
+        }
+        return originalPrice ;
     }
     
 }

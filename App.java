@@ -1,8 +1,5 @@
-import Lib.CartItem;
-import Lib.PricingService;
-import Lib.Product;
-import Lib.ProductCatalog;
-import Lib.ShoppingCart;
+import Lib.*;
+import Lib.Discount.*;
 
 public class App {
     private static int passedCount = 0;
